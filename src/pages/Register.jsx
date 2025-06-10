@@ -79,7 +79,7 @@ const Register = () => {
 
             <button
                 onClick={handleSubmit}
-                disabled={Object.values(form).some(v => !v)} //gör om form till en array och kollar om något värde är falsy
+                disabled={!form.username || !form.email || !form.password}
             >
                 Registrera
             </button>
