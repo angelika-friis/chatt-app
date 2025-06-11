@@ -17,11 +17,12 @@ Hittar du [här](https://www.figma.com/design/sYzQblwCt1wUusF7mXTO8s/Chatify?nod
 - [x] Skapa nytt projekt via `npm create vite@latest`
 - [x] Installera beroenden (`react-router-dom`, `jwt-decode`)
 - [x] Strukturera projektmappar: `pages/`, `components/`, `context/`, `utils/`
+- [ ] Gör mockups för projekt
 
 ### 🔹 FAS 2 – Funktionalitet för G-betyg
 #### 🔐 Autentisering
-- [ ] Skapa `Register.jsx` med validering och redirect vid lyckad registrering
-- [ ] Skapa `Login.jsx` med hantering av felmeddelanden
+- [x] Skapa `Register.jsx` med validering och redirect vid lyckad registrering
+- [x] Skapa `Login.jsx` med hantering av felmeddelanden
 - [ ] Spara JWT-token och användardata i state och localStorage
 - [ ] Dekoda JWT-token
 - [ ] Visa användarnamn och avatar vid inloggning

@@ -38,3 +38,29 @@ export const registerUser = async (form) => {
         return { success: false, message: error.message };
     }
 };
+
+export const login = async (form) => {
+    try {
+        const csrfToken = await getCsrfToken();
+        const formdata = { ...form, csrfToken };
+
+        const res = await fetch(BASE_URL + `/auth/token`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(formdata),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+            return { success: false, message: data.error };
+        }
+
+        return { success: true, data };
+    } catch (error) {
+        console.error('registerUser error:', error);
+        return { success: false, message: error.message };
+    }
+};

@@ -25,7 +25,7 @@ const Register = () => {
         }
     }
 
-    const handleSubmit = async (e) => {
+    const handleRegister = async (e) => {
         const res = await registerUser(form);
         if (!res.success) {
             console.log(res.message);
@@ -78,7 +78,7 @@ const Register = () => {
             <p>{error}</p>
 
             <button
-                onClick={handleSubmit}
+                onClick={handleRegister}
                 disabled={!form.username || !form.email || !form.password}
             >
                 Registrera
