@@ -1,12 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { inviteUser, searchUsers } from "../api/usersService";
+import { getConversations } from "../api/chatService";
 
 const Chats = () => {
-    const [contacts, setContacts] = useState(null);
+    const [conversations, setConversations] = useState(null);
     const [searchContacts, setSearchContacts] = useState(false);
     const [query, setQuery] = useState("");
     const [searchResult, setSearchResult] = useState(null);
 
+    useEffect(() => {
+        const fetchData = async () => {
+            const c = await getConversations();
+            setConversations(c.data);
+        };
+        fetchData();
+    }, [])
 
     const handleAddContacts = async (e) => {
         setSearchContacts(true);
@@ -70,6 +79,14 @@ const Chats = () => {
                         ))}
                     </ul>
                 </>}
+            {conversations &&
+                <ul>
+                    {conversations.map(conversation => (
+                        <li key={conversation}>
+                            <Link to={`/conversation/${conversation}`}>{conversation}</Link>
+                        </li>
+                    ))}
+                </ul>}
         </div>
     )
 }
