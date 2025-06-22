@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Chats from "./pages/Chats";
 import ConversationPage from "./pages/ConversationPage";
+import InvitesPage from "./pages/InvitesPage";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/chats" element={<Chats />} />
           <Route path="/conversation/:id" element={<ConversationPage />} />
+          <Route path="/invites" element={<InvitesPage />} />
           {/* <Route element={<ProtectedRoute />}>
             <Route path="/chat" element={<Dashboard />} />
             <Route path="/profile" element={<UserProfile />} />
