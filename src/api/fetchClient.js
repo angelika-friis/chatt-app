@@ -1,4 +1,4 @@
-import { jwtDecode } from "jwt-decode";
+import { isTokenValid } from "../utils/authHelpers";
 
 const BASE_URL = 'https://chatify-api.up.railway.app';
 
@@ -36,17 +36,5 @@ const fetchClient = async (url, options = {}) => {
         return { success: false, message: error.message };
     }
 };
-
-function isTokenValid(token) {
-    if (!token) return false;
-
-    try {
-        const decoded = jwtDecode(token);
-        const expiresAt = decoded.exp * 1000;
-        return Date.now() < expiresAt;
-    } catch (error) {
-        return { success: false, message: error.message };
-    }
-}
 
 export default fetchClient;

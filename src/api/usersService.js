@@ -8,6 +8,13 @@ export const searchUsers = async (query) => {
     return res;
 }
 
+export const getUser = async (userId) => {
+    const res = await fetchClient(`/users/${userId}`, {
+        method: "GET"
+    });
+    return res;
+}
+
 export const inviteUser = async (userId) => {
     const conversationId = uuidv4();
 

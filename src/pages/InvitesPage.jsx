@@ -10,7 +10,6 @@ const InvitePage = () => {
         const fetchInvites = async () => {
             const token = localStorage.getItem("jwtToken");
             const decoded = jwtDecode(token);
-            console.info(decoded)
             setInvites(JSON.parse(decoded.invite))
         }
         fetchInvites();

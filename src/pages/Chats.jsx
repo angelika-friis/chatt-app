@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { inviteUser, searchUsers } from "../api/usersService";
 import { getConversations } from "../api/chatService";
+import { FiUserPlus } from "react-icons/fi";
+import { TbMessageCircleQuestion } from "react-icons/tb";
 
 const Chats = () => {
     const [conversations, setConversations] = useState(null);
@@ -12,7 +14,7 @@ const Chats = () => {
     useEffect(() => {
         const fetchData = async () => {
             const c = await getConversations();
-            setConversations(c.data);
+            setConversations(c.data.participating);
         };
         fetchData();
     }, [])
@@ -58,7 +60,7 @@ const Chats = () => {
             <button
                 onClick={handleAddContacts}
             >
-                Lägg till ny kontakt
+                <FiUserPlus />
             </button>
             {searchContacts &&
                 <>
@@ -87,6 +89,9 @@ const Chats = () => {
                         </li>
                     ))}
                 </ul>}
+            <Link to="/invites">
+                <TbMessageCircleQuestion /> Medelandeförfrågningar
+            </Link>
         </div>
     )
 }

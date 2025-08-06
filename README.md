@@ -29,7 +29,7 @@ Hittar du [här](https://www.figma.com/design/sYzQblwCt1wUusF7mXTO8s/Chatify?nod
 - [ ] Skydda routes med `PrivateRoute`
 
 #### 💬 Chat-funktionalitet (`Chat.jsx`)
-- [ ] Hämta alla meddelanden
+- [x] Hämta alla meddelanden
 - [ ] Visa egna meddelanden till höger, andras till vänster
 - [ ] Skapa nya meddelanden (med sanitering)
 - [ ] Radera egna meddelanden
