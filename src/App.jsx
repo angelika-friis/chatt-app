@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import Chats from "./pages/Chats";
 import ConversationPage from "./pages/ConversationPage";
 import InvitesPage from "./pages/InvitesPage";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
 
@@ -14,9 +15,11 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/chats" element={<Chats />} />
-          <Route path="/conversation/:id" element={<ConversationPage />} />
-          <Route path="/invites" element={<InvitesPage />} />
+          <Route element={<MainLayout />}>
+            <Route path="/chats" element={<Chats />} />
+            <Route path="/conversation/:id" element={<ConversationPage />} />
+            <Route path="/invites" element={<InvitesPage />} />
+          </Route>
           {/* <Route element={<ProtectedRoute />}>
             <Route path="/chat" element={<Dashboard />} />
             <Route path="/profile" element={<UserProfile />} />

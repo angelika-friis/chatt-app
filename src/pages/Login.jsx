@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../api/authService";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const Login = () => {
     const [form, setForm] = useState({
@@ -30,29 +30,34 @@ const Login = () => {
     }
 
     return (
-        <div>
-            <input
-                type="text"
-                name="username"
-                placeholder="Användarnamn"
-                value={form.username}
-                onChange={handleChange}
-            />
-            <input
-                type="password"
-                name="password"
-                placeholder="Lösenord"
-                value={form.password}
-                onChange={handleChange}
-            />
-            <p>{error}</p>
-            <button
-                onClick={handleLogin}
-                disabled={!form.username || !form.password}
-            >
-                Logga in
-            </button>
-        </div>
+        <>
+            <Link to={`/register`}>
+                Inte registrerarad?
+            </Link>
+            <div>
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Användarnamn"
+                    value={form.username}
+                    onChange={handleChange}
+                />
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Lösenord"
+                    value={form.password}
+                    onChange={handleChange}
+                />
+                <p>{error}</p>
+                <button
+                    onClick={handleLogin}
+                    disabled={!form.username || !form.password}
+                >
+                    Logga in
+                </button>
+            </div>
+        </>
     )
 }
 export default Login
