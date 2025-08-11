@@ -41,6 +41,16 @@ export default function Header() {
     const navigate = useNavigate();
     const location = useLocation();
 
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem("jwtToken");
+            const decoded = jwtDecode(token);
+            console.info(decoded);
+            setUser({ username: decoded.user, avatarUrl: "https://i.pravatar.cc/40" });
+        }
+        fetchUser();
+    }, [])
+
     const showBackButton = ["/conversation/", "/invites"].some(path =>
         location.pathname.startsWith(path)
     );
@@ -157,18 +167,6 @@ export default function Header() {
             </List>
         </Box>
     );
-
-    useEffect(() => {
-        const fetchUser = async () => {
-            const token = localStorage.getItem("jwtToken");
-            const decoded = jwtDecode(token);
-            console.info(decoded);
-            setUser({ username: decoded.user, avatarUrl: "https://i.pravatar.cc/40" });
-        }
-        fetchUser();
-    }, [])
-
-
 
     return (
         <header>

@@ -24,3 +24,11 @@ export const inviteUser = async (userId) => {
     });
     return res;
 }
+
+export const updateUser = async (userId, updatedData) => {
+    const res = await fetchClient(`/user`, {
+        method: "PUT",
+        body: JSON.stringify({ userId, updatedData })
+    });
+    return res;
+}
