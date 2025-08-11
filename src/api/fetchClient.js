@@ -15,7 +15,7 @@ const fetchClient = async (url, options = {}) => {
         },
     };
 
-    if (!isTokenValid(jwtToken)) {
+    if (!isTokenValid()) {
         return { success: false, message: 'Session expired. Please sign in' };
     }
 

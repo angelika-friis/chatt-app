@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { login } from "../api/authService";
 import { Link, useNavigate } from "react-router";
+import { Alert, Button, TextField } from "@mui/material";
+import { useSearchParams } from "react-router-dom";
+import CheckIcon from '@mui/icons-material/Check';
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
     const [form, setForm] = useState({
@@ -8,8 +12,11 @@ const Login = () => {
         password: "",
     })
     const [error, setError] = useState("");
+    let [searchParams, setSearchParams] = useSearchParams();
 
     let navigate = useNavigate();
+
+    const registeredUser = searchParams.get("registrationSucessful");
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -23,8 +30,9 @@ const Login = () => {
         } else {
             setError("");
             const jwtToken = res.data.token;
-            localStorage.setItem("jwtToken", jwtToken)
-            alert("inloggad!")
+            localStorage.setItem("jwtToken", jwtToken);
+            const decodedToken = jwtDecode(jwtToken);
+            localStorage.setItem("userData", JSON.stringify(decodedToken));
             navigate("/chats");
         }
     }
@@ -32,17 +40,31 @@ const Login = () => {
     return (
         <>
             <Link to={`/register`}>
-                Inte registrerarad?
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="large"
+                    sx={{
+                        textTransform: "none",
+                    }}
+                >
+                    Inte registrerarad?
+                </Button>
             </Link>
+            {registeredUser &&
+                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+                    Lyckad registrering. Välkommen {registeredUser}! 👋
+                </Alert>}
+            <img src="logo.svg" />
             <div>
-                <input
+                <TextField
                     type="text"
                     name="username"
                     placeholder="Användarnamn"
                     value={form.username}
                     onChange={handleChange}
                 />
-                <input
+                <TextField
                     type="password"
                     name="password"
                     placeholder="Lösenord"
@@ -50,12 +72,23 @@ const Login = () => {
                     onChange={handleChange}
                 />
                 <p>{error}</p>
-                <button
+
+                <Button
+                    variant="contained"
+                    size="large"
+                    sx={{
+                        backgroundColor: "#000",
+                        color: "#fff",
+                        textTransform: "none",
+                        "&:hover": {
+                            backgroundColor: "rgba(144, 49, 170)",
+                        },
+                    }}
                     onClick={handleLogin}
                     disabled={!form.username || !form.password}
                 >
                     Logga in
-                </button>
+                </Button>
             </div>
         </>
     )
