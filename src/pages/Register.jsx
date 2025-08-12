@@ -1,108 +1,63 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { registerUser } from "../api/authService";
-import { Avatar, Button, TextField } from "@mui/material";
+import { Avatar, TextField } from "@mui/material";
+import isUrlValid from "../utils/isUrlValid";
+import { LinkButton, SubmitButton } from "../components/Buttons";
 
 const Register = () => {
-    const [form, setForm] = useState({
-        username: "",
-        password: "",
-        email: "",
-        avatar: "",
-    })
+    const [form, setForm] = useState({ username: "", password: "", email: "", avatar: "" });
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
-    let navigate = useNavigate();
+    const fields = [
+        { name: "email", type: "email", placeholder: "Mejl" },
+        { name: "username", type: "text", placeholder: "Användarnamn" },
+        { name: "password", type: "password", placeholder: "Lösenord" },
+        { name: "avatar", type: "url", placeholder: "Url för profilbild" },
+    ];
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
     }
 
-    const isUrlValid = (url) => {
-        try {
-            return Boolean(new URL(url))
-        } catch {
-            return false
-        }
-    }
-
-    const handleRegister = async (e) => {
+    const handleRegister = async () => {
         const res = await registerUser(form);
         if (!res.success) {
-            console.log(res.message);
             setError(res.message);
         } else {
             setError("");
             navigate(`/login?registrationSucessful=${form.username}`);
-            alert("registrerad!")
         }
     }
 
     return (
         <div>
-            <TextField
-                type="email"
-                name="email"
-                placeholder="Mejl"
-                value={form.email}
-                onChange={handleChange}
-            />
-            <TextField
-                type="text"
-                name="username"
-                placeholder="Användarnamn"
-                value={form.username}
-                onChange={handleChange}
-            />
-            <TextField
-                type="password"
-                name="password"
-                placeholder="Lösenord"
-                value={form.password}
-                onChange={handleChange}
-            />
-            <TextField
-                type="url"
-                name="avatar"
-                placeholder="url för profilbild"
-                value={form.avatar}
-                onChange={handleChange}
-            />
+            <LinkButton to="/login">Redan registrerad?</LinkButton>
 
-            {isUrlValid(form.avatar) ? (
-                <Avatar
-                    src={form.avatar}
-                    alt="Förhandsvisning av profilbild"
-                    sx={{ width: 100, height: 100 }}
-                >
-                </Avatar>
-            ) :
-                (<>
-                    <Avatar
-                        alt="Förhandsvisning av profilbild"
-                        sx={{ width: 100, height: 100 }}
-                    >
-                    </Avatar>
-                </>)
-            }
+            {fields.map(field => (
+                <TextField
+                    key={field.name}
+                    {...field}
+                    value={form[field.name]}
+                    onChange={handleChange} />
+            ))}
+
+            <Avatar
+                src={isUrlValid(form.avatar) ? form.avatar : undefined}
+                alt="Förhandsvisning av profilbild"
+                sx={{ width: 100, height: 100 }}
+            />
 
             <p>{error}</p>
 
-            <Button
+            <SubmitButton
                 onClick={handleRegister}
                 disabled={!form.username || !form.email || !form.password}
-                variant="contained"
-                size="large"
-                sx={{
-                    backgroundColor: "#000",
-                    color: "#fff",
-                    textTransform: "none",
-                }}
-
             >
                 Registrera
-            </Button>
+            </SubmitButton>
         </div>
     )
 }
-export default Register
+export default Register;

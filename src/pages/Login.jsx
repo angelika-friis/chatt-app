@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { login } from "../api/authService";
-import { Link, useNavigate } from "react-router";
-import { Alert, Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router";
+import { Alert, TextField } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import CheckIcon from '@mui/icons-material/Check';
 import { jwtDecode } from "jwt-decode";
+import { LinkButton, SubmitButton } from "../components/Buttons";
 
 const Login = () => {
     const [form, setForm] = useState({
@@ -13,10 +14,13 @@ const Login = () => {
     })
     const [error, setError] = useState("");
     let [searchParams, setSearchParams] = useSearchParams();
-
     let navigate = useNavigate();
-
     const registeredUser = searchParams.get("registrationSucessful");
+
+    const fields = [
+        { name: "username", type: "text", placeholder: "Användarnamn" },
+        { name: "password", type: "password", placeholder: "Lösenord" },
+    ];
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
@@ -39,56 +43,33 @@ const Login = () => {
 
     return (
         <>
-            <Link to={`/register`}>
-                <Button
-                    variant="outlined"
-                    color="secondary"
-                    size="large"
-                    sx={{
-                        textTransform: "none",
-                    }}
-                >
-                    Inte registrerarad?
-                </Button>
-            </Link>
+            <LinkButton to="/register">Inte registrerad?</LinkButton>
+
             {registeredUser &&
                 <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
                     Lyckad registrering. Välkommen {registeredUser}! 👋
                 </Alert>}
+
             <img src="logo.svg" />
+
             <div>
-                <TextField
-                    type="text"
-                    name="username"
-                    placeholder="Användarnamn"
-                    value={form.username}
-                    onChange={handleChange}
-                />
-                <TextField
-                    type="password"
-                    name="password"
-                    placeholder="Lösenord"
-                    value={form.password}
-                    onChange={handleChange}
-                />
+
+                {fields.map(field => (
+                    <TextField
+                        key={field.name}
+                        {...field}
+                        value={form[field.name]}
+                        onChange={handleChange} />
+                ))}
+
                 <p>{error}</p>
 
-                <Button
-                    variant="contained"
-                    size="large"
-                    sx={{
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        textTransform: "none",
-                        "&:hover": {
-                            backgroundColor: "rgba(144, 49, 170)",
-                        },
-                    }}
+                <SubmitButton
                     onClick={handleLogin}
                     disabled={!form.username || !form.password}
                 >
                     Logga in
-                </Button>
+                </SubmitButton>
             </div>
         </>
     )
