@@ -2,6 +2,7 @@ import { jwtDecode } from "jwt-decode";
 
 export const logoutUser = () => {
     localStorage.removeItem('jwtToken');
+    localStorage.removeItem('userData');
 }
 
 export const isTokenValid = () => {
