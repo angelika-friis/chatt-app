@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login } from "../api/authService";
 import { useNavigate } from "react-router";
-import { Alert, TextField } from "@mui/material";
+import { Alert, Box, TextField, Typography } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 import CheckIcon from '@mui/icons-material/Check';
 import { jwtDecode } from "jwt-decode";
@@ -15,7 +15,7 @@ const Login = () => {
     const [error, setError] = useState("");
     let [searchParams, setSearchParams] = useSearchParams();
     let navigate = useNavigate();
-    const registeredUser = searchParams.get("registrationSucessful");
+    const registeredUser = searchParams.get("registrationSuccessful");
 
     const fields = [
         { name: "username", type: "text", placeholder: "Användarnamn" },
@@ -27,6 +27,7 @@ const Login = () => {
     }
 
     const handleLogin = async (e) => {
+        e.preventDefault();
         const res = await login(form);
         if (!res.success) {
             console.log(res.message);
@@ -42,36 +43,69 @@ const Login = () => {
     }
 
     return (
-        <>
-            <LinkButton to="/register">Inte registrerad?</LinkButton>
-
-            {registeredUser &&
-                <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                height: '100vh',
+                gap: 2
+            }}
+        >
+            {registeredUser && (
+                <Alert
+                    icon={<CheckIcon fontSize="inherit" />}
+                    severity="success"
+                    sx={{ width: '100%' }}
+                >
                     Lyckad registrering. Välkommen {registeredUser}! 👋
-                </Alert>}
+                </Alert>
+            )}
 
-            <img src="logo.svg" />
+            <LinkButton to="/register" m={3} mr={5}>
+                Inte registrerad?
+            </LinkButton>
 
-            <div>
+            <Box
+                component="img"
+                src="logo.png"
+                alt="Logo"
+                sx={{
+                    width: '100%',
+                    maxWidth: 600,
+                    height: 'auto',
+                    p: 5,
+                    alignSelf: 'end'
+                }}
+            />
 
+            <Box
+                component="form"
+                onSubmit={handleLogin}
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                    width: '50%',
+                    mb: 8
+                }}
+            >
                 {fields.map(field => (
                     <TextField
                         key={field.name}
                         {...field}
                         value={form[field.name]}
-                        onChange={handleChange} />
+                        onChange={handleChange}
+                        size="small"
+                    />
                 ))}
 
-                <p>{error}</p>
+                <SubmitButton>Logga in</SubmitButton>
 
-                <SubmitButton
-                    onClick={handleLogin}
-                    disabled={!form.username || !form.password}
-                >
-                    Logga in
-                </SubmitButton>
-            </div>
-        </>
+                <Typography variant="body2" sx={{ alignSelf: 'center' }}>{error}</Typography>
+            </Box>
+        </Box>
+
     )
 }
 export default Login
