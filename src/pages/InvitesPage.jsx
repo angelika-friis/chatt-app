@@ -1,38 +1,41 @@
 import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
-import { Link } from "react-router-dom";
-import { TbMessageCirclePlus } from "react-icons/tb";
+import { Box, Typography } from "@mui/material";
+import UserList from "../components/UserList";
+import { getUniqueUsersInConversation } from "../utils/chatHelpers";
 
 const InvitePage = () => {
-    const [invites, setInvites] = useState([]);
+    const [conversations, setConversations] = useState([]);
 
     useEffect(() => {
         const fetchInvites = async () => {
-            const token = localStorage.getItem("jwtToken");
-            const decoded = jwtDecode(token);
-            setInvites(JSON.parse(decoded.invite))
+            const fetchedUser = JSON.parse(localStorage.getItem("userData"));
+            const invites = JSON.parse(fetchedUser.invite)
+            invites.map(async invite => {
+                const users = await getUniqueUsersInConversation(invite.conversationId);
+                setConversations(prevConversations => [...prevConversations, { conversationId: invite.conversationId, users }])
+            })
         }
         fetchInvites();
     }, [])
 
 
     return (
-        <div>
-            <h1>Dina invationer</h1>
-            {invites && invites.length > 0
-                ? <ul>
-                    {invites.map(invite =>
-                        <li key={invite.conversationId}>
-                            <Link to={`/conversation/${invite.conversationId}`}>
-                                <p>{invite.username}</p>
-                                <TbMessageCirclePlus />
-                            </Link>
-                        </li>
-                    )}
-                </ul>
-                : <p>Inga invationer än</p>
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mt: 2,
+            gap: 2
+        }}>
+            <Typography variant="h5">Dina inbjudningar</Typography>
+            {conversations && <UserList conversations={conversations ? conversations : []} />}
+            {!conversations || conversations.length === 0 &&
+                <Box>
+                    <Typography variant="body1">Inga inbjudningar än</Typography>
+                </Box>
             }
-        </div>
-    )
+        </Box>
+    );
 }
 export default InvitePage
