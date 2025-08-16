@@ -18,6 +18,10 @@ export const registerUser = async (form) => {
         const csrfToken = await getCsrfToken();
         const formdata = { ...form, csrfToken };
 
+        if (formdata.avatar === "") {
+            formdata.avatar = null;
+        }
+
         const res = await fetch(BASE_URL + `/auth/register`, {
             method: 'POST',
             headers: {

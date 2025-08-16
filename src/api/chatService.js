@@ -1,4 +1,5 @@
 import fetchClient from './fetchClient';
+import { v4 as uuidv4 } from 'uuid';
 
 export const getConversations = async () => {
     const res = await fetchClient(`/conversations`, {
@@ -28,3 +29,24 @@ export const deleteMessage = async (messageId) => {
     });
     return res;
 }
+
+export const createConversation = async (userId) => {
+    const conversationId = uuidv4();
+
+    const res = await fetchClient(`/invite/${userId}`, {
+        method: "POST",
+        body: JSON.stringify({ conversationId }),
+    });
+
+    res.conversationId = conversationId;
+
+    return res;
+};
+
+export const inviteUserToConversation = async (userId, conversationId) => {
+    const res = await fetchClient(`/invite/${userId}`, {
+        method: "POST",
+        body: JSON.stringify({ conversationId }),
+    });
+    return res;
+};
