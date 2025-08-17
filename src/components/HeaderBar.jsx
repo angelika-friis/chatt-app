@@ -1,11 +1,25 @@
-import { AppBar, Toolbar, IconButton, Box } from "@mui/material";
+import { AppBar, Toolbar, IconButton } from "@mui/material";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import MenuIcon from '@mui/icons-material/Menu';
 
 export default function HeaderBar({ showBackButton, onBackClick, onMenuClick }) {
     return (
-        <AppBar position="static">
-            <Toolbar>
+        <AppBar position="fixed" sx={{
+            backgroundColor: "transparent",
+            backdropFilter: "blur(10px)",
+            color: "black",
+            boxShadow: "none",
+            top: 0,
+            zIndex: 1200
+        }}>
+            <Toolbar
+                sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: "100%"
+                }}
+            >
                 {showBackButton && (
                     <IconButton
                         color="inherit"
@@ -15,19 +29,22 @@ export default function HeaderBar({ showBackButton, onBackClick, onMenuClick }) 
                         <ArrowBackIosNewIcon />
                     </IconButton>
                 )}
-                <Box
+
+                <IconButton
+                    aria-label="open menu"
                     sx={{
-                        marginLeft: "auto",
-                        display: "flex",
-                        alignItems: "center",
                         cursor: "pointer",
-                        gap: 1,
+                        color: "black",
+                        ml: "auto",
+                        ":hover": {
+                            backgroundColor: "transparent"
+                        }
                     }}
                     onClick={onMenuClick}
                 >
-                    <MenuRoundedIcon />
-                </Box>
+                    <MenuIcon />
+                </IconButton>
             </Toolbar>
-        </AppBar>
+        </AppBar >
     );
 }

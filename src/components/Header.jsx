@@ -6,6 +6,7 @@ import MenuDrawer from "./MenuDrawer";
 import UserSearchDialog from "./UserSearchDialog";
 import { createConversation } from "../api/chatService";
 import { useLogout } from "../hooks/useLogout";
+import { Toolbar } from "@mui/material";
 
 export default function Header() {
     const [user, setUser] = useState(null);
@@ -19,15 +20,12 @@ export default function Header() {
 
     useEffect(() => {
         const fetchedUser = JSON.parse(localStorage.getItem("userData"));
-        console.log(fetchedUser)
         setUser(fetchedUser);
     }, []);
 
     const showBackButton = ["/conversation/", "/invites", "/profile"].some(path =>
         location.pathname.startsWith(path)
     );
-
-    const showAddButton = ["/conversation/"].some(path => location.pathname.startsWith(path));
 
     const handleSearchChange = async (e) => {
         const value = e.target.value;
@@ -84,6 +82,8 @@ export default function Header() {
                 searchResult={searchResult}
                 onAddContact={handleCreateConversation}
             />
+
+            <Toolbar />
         </header>
     );
 }
