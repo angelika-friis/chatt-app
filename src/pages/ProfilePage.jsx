@@ -1,152 +1,137 @@
 import { useEffect, useState } from "react";
-import { getUser, updateUser } from "../api/usersService";
-import { List, ListItem, ListItemAvatar, ListItemText, Avatar, IconButton, TextField, Alert } from "@mui/material";
-import { jwtDecode } from "jwt-decode";
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import { deleteUser, updateUser } from "../api/usersService";
+import {
+    List, Alert, Button, DialogActions, Box, Typography, Dialog, DialogTitle, DialogContent
+} from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
+import { useLogout } from "../hooks/useLogout";
+import { getUser } from "../api/usersService";
+import AvatarEditor from "../components/AvatarEditor";
+import EditableField from "../components/EditableField";
 
 const UserProfile = () => {
     const [user, setUser] = useState(null);
     const [editingField, setEditingField] = useState(null);
     const [tempValue, setTempValue] = useState("");
-    const [alert, setAlert] = useState(null);
     const [avatarPreview, setAvatarPreview] = useState("");
+    const [alert, setAlert] = useState(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const logoutUser = useLogout();
 
     useEffect(() => {
-        const fetchData = async () => {
-            const token = localStorage.getItem("jwtToken");
-            const decoded = jwtDecode(token);
-            const userData = await getUser(decoded.id);
-            const fetchedUser = userData.data[0];
-            setUser(fetchedUser);
-            setAvatarPreview(fetchedUser.avatar);
-        };
-        fetchData();
+        fetchUser();
     }, []);
 
-    const handleEditClick = (field) => {
+    const fetchUser = async () => {
+        const userId = JSON.parse(localStorage.getItem("userData")).id;
+        const res = await getUser(userId);
+        const fetchedUser = res.data[0];
+        setUser(fetchedUser);
+        setAvatarPreview(fetchedUser.avatar);
+    };
+
+    const startEdit = (field) => {
         setEditingField(field);
         setTempValue(user[field] || "");
-        if (field === "avatar") {
-            setAvatarPreview(user.avatar || "");
-        }
+        if (field === "avatar") setAvatarPreview(user.avatar || "");
     };
 
-    const handleSave = async () => {
-        if (editingField) {
-            const updatedData = { [editingField]: tempValue };
-
-            const res = await updateUser(user.id, updatedData);
-            if (res.success) {
-                setUser({ ...user, [editingField]: tempValue });
-                setAlert(
-                    <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-                        Information uppdaterad
-                    </Alert>
-                );
-            } else {
-                setAlert(
-                    <Alert severity="error">{res.message || "Något gick fel"}</Alert>
-                )
-            }
-
-            setEditingField(null);
-            setTempValue("");
-        }
+    const cancelEdit = () => {
+        setEditingField(null);
+        setTempValue("");
+        setAvatarPreview(user.avatar);
     };
+
+    const saveEdit = async () => {
+        if (!editingField || tempValue.trim() === "" || tempValue === user[editingField]) {
+            cancelEdit();
+            return;
+        }
+        const res = await updateUser(user.id, { [editingField]: tempValue });
+        if (res.success) {
+            fetchUser();
+            setAlert(<Alert icon={<CheckIcon />} severity="success">Information uppdaterad</Alert>);
+        } else {
+            setAlert(<Alert severity="error">{res.message || "Något gick fel"}</Alert>);
+        }
+        cancelEdit();
+    };
+
+    const handleDeleteProfile = async () => {
+        const res = await deleteUser(user.id);
+        if (res.success) logoutUser();
+        else setAlert(<Alert severity="error">{res.message || "Något gick fel"}</Alert>);
+    };
+
+    if (!user) return null;
 
     return (
-        <div>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, p: 3, maxWidth: 400, margin: "auto" }}>
             {alert}
-            {user &&
-                <List>
-                    <ListItem
-                        secondaryAction={
-                            editingField === "username" ? (
-                                <IconButton onClick={handleSave}>
-                                    <CheckIcon />
-                                </IconButton>
-                            ) : (
-                                <IconButton onClick={() => handleEditClick("username")}>
-                                    <EditRoundedIcon />
-                                </IconButton>
-                            )
-                        }
-                    >
-                        {editingField === "username" ? (
-                            <TextField
-                                value={tempValue}
-                                onChange={(e) => setTempValue(e.target.value)}
-                                size="small"
-                            />
-                        ) : (
-                            <ListItemText>{user.username}</ListItemText>
-                        )}
-                    </ListItem>
 
-                    {/* EMAIL */}
-                    <ListItem
-                        secondaryAction={
-                            editingField === "email" ? (
-                                <IconButton onClick={handleSave}>
-                                    <CheckIcon />
-                                </IconButton>
-                            ) : (
-                                <IconButton onClick={() => handleEditClick("email")}>
-                                    <EditRoundedIcon />
-                                </IconButton>
-                            )
-                        }
-                    >
-                        {editingField === "email" ? (
-                            <TextField
-                                value={tempValue}
-                                onChange={(e) => setTempValue(e.target.value)}
-                                size="small"
-                            />
-                        ) : (
-                            <ListItemText>{user.email}</ListItemText>
-                        )}
-                    </ListItem>
+            <AvatarEditor
+                avatar={tempValue}
+                preview={avatarPreview}
+                isEditing={editingField === "avatar"}
+                onEdit={() => startEdit("avatar")}
+                onChange={(val) => { setTempValue(val); setAvatarPreview(val); }}
+                onSave={saveEdit}
+                onCancel={cancelEdit}
+            />
 
-                    {/* AVATAR */}
-                    <ListItem
-                        secondaryAction={
-                            editingField === "avatar" ? (
-                                <IconButton onClick={handleSave}>
-                                    <CheckIcon />
-                                </IconButton>
-                            ) : (
-                                <IconButton onClick={() => handleEditClick("avatar")}>
-                                    <EditRoundedIcon />
-                                </IconButton>
-                            )
-                        }
+            <List sx={{ width: "100%" }}>
+                <EditableField
+                    label={user.username}
+                    value={tempValue}
+                    isEditing={editingField === "username"}
+                    onEdit={() => startEdit("username")}
+                    onChange={setTempValue}
+                    onSave={saveEdit}
+                    onCancel={cancelEdit}
+                />
+                <EditableField
+                    label={user.email}
+                    value={tempValue}
+                    isEditing={editingField === "email"}
+                    onEdit={() => startEdit("email")}
+                    onChange={setTempValue}
+                    onSave={saveEdit}
+                    onCancel={cancelEdit}
+                />
+            </List>
+
+            <Button
+                variant="outlined"
+                onClick={() => setDialogOpen(true)}
+                sx={{ color: 'secondary.main', borderColor: 'secondary.main', '&:hover': { color: 'secondary.dark' } }}
+                fullWidth
+            >
+                Radera profil
+            </Button>
+
+            <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+                <DialogTitle>Vill du verkligen radera din profil?</DialogTitle>
+                <DialogContent>
+                    <Typography>Detta kan inte ångras.</Typography>
+                </DialogContent>
+                <DialogActions sx={{ p: 2, flexDirection: "column", gap: 1 }}>
+                    <Button
+                        variant="outlined"
+                        onClick={() => setDialogOpen(false)}
+                        sx={{ color: 'secondary.main', borderColor: 'secondary.main', '&:hover': { color: 'secondary.dark' }, width: "100%" }}
                     >
-                        <ListItemAvatar>
-                            <Avatar
-                                alt="profile picture"
-                                src={avatarPreview}
-                                sx={{ width: 100, height: 100 }}
-                            >
-                                {user.username[0].toUpperCase()}
-                            </Avatar>
-                        </ListItemAvatar>
-                        {editingField === "avatar" && (
-                            <TextField
-                                value={tempValue}
-                                onChange={(e) => {
-                                    setTempValue(e.target.value);
-                                    setAvatarPreview(e.target.value);
-                                }}
-                                size="small"
-                                placeholder="Ny avatar-URL"
-                            />
-                        )}
-                    </ListItem>
-                </List>
-            }
-        </div>
+                        Avbryt
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleDeleteProfile}
+                        sx={{ backgroundColor: 'secondary.main', color: 'white', '&:hover': { bgcolor: 'secondary.dark' }, width: "100%" }}
+                    >
+                        Radera
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </Box>
     );
 };
 
