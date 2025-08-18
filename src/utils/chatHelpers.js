@@ -26,7 +26,7 @@ export const enrichMessages = async (conversationId) => {
     }));
 };
 
-export const getUniqueUsersInConversation = async (conversationId) => {
+export const getConversationInfo = async (conversationId) => {
     const { data: rawMessages } = await getMessages(conversationId);
 
     const currentUser = JSON.parse(localStorage.getItem("userData"));
@@ -43,5 +43,10 @@ export const getUniqueUsersInConversation = async (conversationId) => {
     );
 
     // Returnera en platt lista med användarobjekt
-    return userResponses.map(response => response.data[0]);
+    const users = userResponses.map(response => response.data[0]);
+
+    const lastMessage = rawMessages[rawMessages.length - 1];
+    const lastMessageTimestamp = lastMessage ? lastMessage.timestamp : null;
+
+    return { users, lastMessage, lastMessageTimestamp };
 };

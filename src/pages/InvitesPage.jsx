@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import UserList from "../components/UserList";
-import { getUniqueUsersInConversation } from "../utils/chatHelpers";
+import { getConversationInfo } from "../utils/chatHelpers";
 
 const InvitePage = () => {
     const [conversations, setConversations] = useState([]);
@@ -11,8 +11,8 @@ const InvitePage = () => {
             const fetchedUser = JSON.parse(localStorage.getItem("userData"));
             const invites = JSON.parse(fetchedUser.invite)
             invites.map(async invite => {
-                const users = await getUniqueUsersInConversation(invite.conversationId);
-                setConversations(prevConversations => [...prevConversations, { conversationId: invite.conversationId, users }])
+                const conversation = await getConversationInfo(invite.conversationId);
+                setConversations(prevConversations => [...prevConversations, { conversationId: invite.conversationId, ...conversation }])
             })
         }
         fetchInvites();
@@ -24,7 +24,10 @@ const InvitePage = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
+            justifyContent: {
+                xs: 'flex-start',
+                md: 'center'
+            },
             mt: 2,
             gap: 2
         }}>

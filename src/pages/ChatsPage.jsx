@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getConversations } from "../api/chatService";
-import { getUniqueUsersInConversation } from "../utils/chatHelpers";
+import { getConversationInfo } from "../utils/chatHelpers";
 import UserList from "../components/UserList";
 import { Box, Typography } from "@mui/material";
 
@@ -12,8 +12,8 @@ const ChatsPage = () => {
             const res = await getConversations();
             const conversationIdsList = (res.data.participating);
             conversationIdsList.map(async conversationId => {
-                const users = await getUniqueUsersInConversation(conversationId);
-                setConversations(prevConversations => [...prevConversations, { conversationId, users }])
+                const conversation = await getConversationInfo(conversationId);
+                setConversations(prevConversations => [...prevConversations, { conversationId, ...conversation }])
             })
         };
         fetchData();
@@ -24,11 +24,16 @@ const ChatsPage = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'center',
-            mt: 2,
-            gap: 2
+            justifyContent: {
+                xs: 'flex-start',
+                md: 'center'
+            },
+            gap: 2,
+            height: 'calc(100vh - 80px)',
+            overflowY: 'auto',
+            width: '100%',
         }}>
-            <Typography variant="h5">Konversationer</Typography>
+            {/* <Typography variant="h5">Konversationer</Typography> */}
             <UserList conversations={conversations ? conversations : []} />
             {!conversations || conversations.length === 0 &&
                 <Box>
