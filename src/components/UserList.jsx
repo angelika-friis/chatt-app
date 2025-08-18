@@ -1,6 +1,5 @@
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar, AvatarGroup } from '@mui/material';
 import { Link } from 'react-router-dom';
-import PersonIcon from '@mui/icons-material/Person';
 
 export default function UserList({ conversations }) {
 
@@ -38,12 +37,21 @@ export default function UserList({ conversations }) {
                         </AvatarGroup>
                     </ListItemAvatar>
                     <ListItemText
-                        sx={{ color: "black", fontSize: "2rem", }}
-                        primary={conversation.users.length > 0 ? conversation.users.map(user => user.username).join(', ') : "Inbjudan ej besvarad"}
-                        secondary={`${conversation.lastMessage.text.length > 50
-                            ? conversation.lastMessage.text.substring(0, 50) + "..."
-                            : conversation.lastMessage.text}`}
+                        sx={{ color: "black", fontSize: "2rem" }}
+                        primary={
+                            conversation.users.length > 0
+                                ? conversation.users.map(user => user.username).join(", ")
+                                : "Inbjudan ej besvarad"
+                        }
+                        secondary={
+                            conversation.lastMessage?.text
+                                ? conversation.lastMessage.text.length > 50
+                                    ? conversation.lastMessage.text.substring(0, 50) + "..."
+                                    : conversation.lastMessage.text
+                                : "Inga meddelanden än"
+                        }
                     />
+
                 </ListItem>
             ))}
         </List>
