@@ -1,5 +1,6 @@
 import { List, ListItem, ListItemAvatar, ListItemText, Avatar, AvatarGroup } from '@mui/material';
 import { Link } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function UserList({ conversations }) {
 
@@ -13,28 +14,35 @@ export default function UserList({ conversations }) {
                     to={`/conversation/${conversation.conversationId}`}
                     sx={{
                         display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
+                        gridTemplateColumns: "100px 1fr",
                         alignItems: "center",
-                        gap: 2,
+                        gap: { xs: 1, sm: 3 },
                     }}
                 >
                     <ListItemAvatar sx={{ mr: 2 }}>
                         <AvatarGroup max={2}>
-                            {conversation.users.map(user => (
-                                <Avatar
-                                    key={user.username}
-                                    alt={user.username}
-                                    src={user.avatar}
-                                    sx={{ height: 50, width: 50 }}
-                                >
-                                    {user.username[0].toUpperCase()}
-                                </Avatar>
-                            ))}
+                            {conversation.users && conversation.users.length > 0 ? (
+                                conversation.users.map((user) => (
+                                    <Avatar
+                                        key={user.username}
+                                        alt={user.username}
+                                        src={user.avatar || undefined}
+                                        sx={{ height: 50, width: 50, }}
+                                    >
+                                        {user.username[0].toUpperCase()}
+                                    </Avatar>
+                                ))
+                            ) : (
+                                <Avatar sx={{ height: 50, width: 50 }} />
+                            )}
                         </AvatarGroup>
                     </ListItemAvatar>
                     <ListItemText
-                        sx={{ color: "black", fontSize: "2rem" }}
-                        primary={conversation.users.map(user => user.username).join(', ')}
+                        sx={{ color: "black", fontSize: "2rem", }}
+                        primary={conversation.users.length > 0 ? conversation.users.map(user => user.username).join(', ') : "Inbjudan ej besvarad"}
+                        secondary={`${conversation.lastMessage.text.length > 50
+                            ? conversation.lastMessage.text.substring(0, 50) + "..."
+                            : conversation.lastMessage.text}`}
                     />
                 </ListItem>
             ))}

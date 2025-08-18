@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: default-src 'self'; img-src 'self' https://i.pravatar.cc https://freeimage.host https://picsum.photos; style-src 'self' 'unsafe-inline' blob:; font-src 'self' data:; connect-src 'self' https://*.sentry.io https://chatify-api.up.railway.app;
+  Content-Security-Policy: default-src 'self'; img-src 'self' https://i.pravatar.cc https://freeimage.host https://fastly.picsum.photos; style-src 'self' 'unsafe-inline' blob:; font-src 'self' data:; connect-src 'self' https://*.sentry.io https://chatify-api.up.railway.app;
