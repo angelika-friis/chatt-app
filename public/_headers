@@ -1,1 +1,2 @@
-/* Content-Security-Policy: default-src 'self'; img-src 'self' https://i.pravatar.cc https://freeimage.host https://picsum.photos; style-src 'self' 'unsafe-inline' blob:; font-src 'self';
+/*
+  Content-Security-Policy: default-src 'self'; img-src 'self' https://i.pravatar.cc https://freeimage.host https://picsum.photos; style-src 'self' 'unsafe-inline' blob:; font-src 'self'

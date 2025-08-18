@@ -45,66 +45,85 @@ const Login = () => {
     return (
         <Box
             sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                height: '100vh',
-                gap: 2
+                display: "flex",
+                flexDirection: "column",
+                height: "100vh",
             }}
         >
-            {registeredUser && (
-                <Alert
-                    icon={<CheckIcon fontSize="inherit" />}
-                    severity="success"
-                    sx={{ width: '100%' }}
-                >
-                    Lyckad registrering. Välkommen {registeredUser}! 👋
-                </Alert>
-            )}
-
-            <LinkButton to="/register" m={3} mr={5}>
-                Inte registrerad?
-            </LinkButton>
-
             <Box
-                component="img"
-                src="logo.png"
-                alt="Logo"
                 sx={{
-                    width: '100%',
-                    maxWidth: 600,
-                    height: 'auto',
-                    p: 5,
-                    alignSelf: 'end'
-                }}
-            />
-
-            <Box
-                component="form"
-                onSubmit={handleLogin}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: 2,
-                    width: '50%',
-                    mb: 8
+                    display: "flex",
+                    flexDirection: "column",
+                    p: 2,
+                    gap: 1,
                 }}
             >
-                {fields.map(field => (
-                    <TextField
-                        key={field.name}
-                        {...field}
-                        value={form[field.name]}
-                        onChange={handleChange}
-                        size="small"
-                    />
-                ))}
+                {registeredUser && (
+                    <Alert
+                        icon={<CheckIcon fontSize="inherit" />}
+                        severity="success"
+                        sx={{ width: "100%" }}
+                    >
+                        Lyckad registrering. Välkommen {registeredUser}! 👋
+                    </Alert>
+                )}
 
-                <SubmitButton>Logga in</SubmitButton>
+                <LinkButton to="/register">Inte registrerad?</LinkButton>
+            </Box>
 
-                <Typography variant="body2" sx={{ alignSelf: 'center' }}>{error}</Typography>
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: 2,
+                }}
+            >
+                <Box
+                    component="img"
+                    src="logo.png"
+                    alt="Logo"
+                    sx={{
+                        width: "100%",
+                        maxWidth: 600,
+                        height: "auto",
+                        p: 5,
+                    }}
+                />
+
+                <Box
+                    component="form"
+                    onSubmit={handleLogin}
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                        width: "50%",
+                        maxWidth: 500,
+                        mb: 8,
+                    }}
+                >
+                    {fields.map((field) => (
+                        <TextField
+                            key={field.name}
+                            {...field}
+                            value={form[field.name]}
+                            onChange={handleChange}
+                            size="small"
+                        />
+                    ))}
+
+                    <SubmitButton>Logga in</SubmitButton>
+
+                    <Typography variant="body2" sx={{ alignSelf: "center" }}>
+                        {error}
+                    </Typography>
+                </Box>
             </Box>
         </Box>
+
 
     )
 }

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { registerUser } from "../api/authService";
-import { Avatar, Box, TextField } from "@mui/material";
+import { Avatar, Box, TextField, Alert } from "@mui/material";
 import isUrlValid from "../utils/isUrlValid";
 import { LinkButton, SubmitButton } from "../components/Buttons";
 
@@ -19,9 +19,6 @@ const Register = () => {
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value })
-        if (e.target.name === "avatar" && !isUrlValid(e.target.value)) {
-            setError("Ogiltig URL för profilbild");
-        }
     }
 
     const handleRegister = async (e) => {
@@ -38,6 +35,7 @@ const Register = () => {
     return (
         <Box sx={{
             display: 'grid',
+            gridTemplateRows: '84.5px 48.0167px auto auto',
             height: '100vh',
             alignItems: 'start',
             justifyItems: 'center',
@@ -53,37 +51,39 @@ const Register = () => {
                 />
                 <LinkButton to="/login">Redan registrerad?</LinkButton>
             </Box>
-
+            {error && <Alert severity="error" sx={{ width: '100%' }}>{error}</Alert>}
             <Box
                 component="form"
                 onSubmit={handleRegister}
-                sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, width: "50%" }}
+                sx={{ display: 'flex', flexDirection: { md: 'row', xs: 'column' }, alignItems: 'center', justifyContent: 'space-around', gap: 2, width: "50%" }}
+                gridRow={4}
             >
-                {fields.map(field => (
-                    <TextField
-                        key={field.name}
-                        {...field}
-                        value={form[field.name]}
-                        onChange={handleChange}
-                        size="small"
-                        sx={{ width: "100%" }}
-                    />
-                ))}
 
                 <Avatar
                     src={isUrlValid(form.avatar) ? form.avatar : undefined}
                     alt="Förhandsvisning av profilbild"
                     sx={{ width: 150, height: 150, m: 5 }}
                 />
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: { xs: 2, md: 4 } }}>
+                    {fields.map(field => (
+                        <TextField
+                            key={field.name}
+                            {...field}
+                            value={form[field.name]}
+                            onChange={handleChange}
+                            size="small"
+                            sx={{ width: "100%" }}
+                        />
+                    ))}
+                    <SubmitButton>
+                        Registrera
+                    </SubmitButton>
 
-                <SubmitButton
-                >
-                    Registrera
-                </SubmitButton>
+                </Box>
 
-                <p>{error}</p>
 
             </Box>
+
         </Box>
     )
 }
