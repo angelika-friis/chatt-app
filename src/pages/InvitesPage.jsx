@@ -10,10 +10,11 @@ const InvitePage = () => {
         const fetchInvites = async () => {
             const fetchedUser = JSON.parse(localStorage.getItem("userData"));
             const invites = JSON.parse(fetchedUser.invite)
-            invites.map(async invite => {
+            invites ? invites.map(async invite => {
                 const conversation = await getConversationInfo(invite.conversationId);
                 setConversations(prevConversations => [...prevConversations, { conversationId: invite.conversationId, ...conversation }])
             })
+                : setConversations([]);
         }
         fetchInvites();
     }, [])

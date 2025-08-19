@@ -33,8 +33,9 @@ export const getConversationInfo = async (conversationId) => {
     const currentId = currentUser.id;
 
     // Hitta unika användar-ID:n
-    const uniqueUserIds = [...new Set(rawMessages.map(msg => msg.userId))]
-        .filter(userId => userId !== currentId);
+    const uniqueUserIds = rawMessages
+        ? [...new Set(rawMessages.map(msg => msg.userId))].filter(userId => userId !== currentId)
+        : [];
 
 
     // Hämta alla unika användare
