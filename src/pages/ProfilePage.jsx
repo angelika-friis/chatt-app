@@ -50,7 +50,7 @@ const UserProfile = () => {
         const res = await updateUser(user.id, { [editingField]: tempValue });
         if (res.success) {
             fetchUser();
-            setAlert(<Alert icon={<CheckIcon />} severity="success">Information uppdaterad</Alert>);
+            setAlert(<Alert icon={<CheckIcon />} severity="success">Information uppdaterad. Logga ut för att se ändringarna.</Alert>);
         } else {
             setAlert(<Alert severity="error">{res.message || "Något gick fel"}</Alert>);
         }

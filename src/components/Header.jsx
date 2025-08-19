@@ -61,7 +61,7 @@ export default function Header() {
         <header>
             <HeaderBar
                 showBackButton={showBackButton}
-                onBackClick={() => navigate("/chats")}
+                onBackClick={() => navigate(-1)}
                 onMenuClick={() => setDrawerOpen(true)}
             />
 
@@ -70,7 +70,10 @@ export default function Header() {
                 onClose={() => setDrawerOpen(false)}
                 user={user}
                 onAddConversation={() => { setDialogOpen(true); setDrawerOpen(false); }}
-                onNavigate={(path) => navigate(path)}
+                onNavigate={(path) => {
+                    navigate(path);
+                    setDrawerOpen(false);
+                }}
                 onLogout={logoutUser}
             />
 

@@ -28,7 +28,7 @@ export default function UserList({ conversations }) {
                                         src={user.avatar || undefined}
                                         sx={{ height: 50, width: 50, }}
                                     >
-                                        {user.username[0].toUpperCase()}
+                                        {Array.from(message.user.username)[0].toUpperCase?.() || ""}
                                     </Avatar>
                                 ))
                             ) : (

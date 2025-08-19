@@ -7,7 +7,6 @@ const AvatarEditor = ({ avatar, preview, isEditing, onEdit, onChange, onSave, on
     <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", mb: 2 }}>
         <Box sx={{ position: "relative", width: 125, height: 125 }}>
             <Avatar alt="profile picture" src={preview} sx={{ width: 125, height: 125 }}>
-                {avatar?.[0]?.toUpperCase()}
             </Avatar>
             {!isEditing && (
                 <IconButton

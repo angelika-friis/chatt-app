@@ -99,7 +99,7 @@ const ConversationPage = () => {
                                         alt={message.user.username}
                                         sx={{ gridArea: "avatar" }}
                                     >
-                                        {message.user.username[0].toUpperCase()}
+                                        {Array.from(message.user.username)[0].toUpperCase?.() || ""}
                                     </Avatar>
                                 )}
 
