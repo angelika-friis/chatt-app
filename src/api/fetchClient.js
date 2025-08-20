@@ -1,6 +1,6 @@
 import { isTokenValid } from "../utils/authHelpers";
 
-const BASE_URL = 'https://chatify-api.up.railway.app';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const fetchClient = async (url, options = {}) => {
     const jwtToken = localStorage.getItem('jwtToken');

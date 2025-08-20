@@ -1,4 +1,4 @@
-const BASE_URL = 'https://chatify-api.up.railway.app';
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const getCsrfToken = async () => {
     const res = await fetch(BASE_URL + '/csrf', {
