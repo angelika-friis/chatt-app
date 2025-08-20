@@ -16,6 +16,10 @@ const ConversationPage = () => {
 
     useEffect(() => {
         loadMessages();
+        const intervalId = setInterval(() => {
+            loadMessages();
+        }, 5000);
+        return () => clearInterval(intervalId);
     }, [])
 
     const loadMessages = async () => {
@@ -60,11 +64,13 @@ const ConversationPage = () => {
             }}>
                 {messages.map((message, index) => {
                     const isUser = message.user.id === currentUserId;
+                    const timeStamp = new Date(message.createdAt);
+                    const isToday = timeStamp.toDateString() === new Date().toDateString();
 
                     return (
                         <Box key={message.id} sx={{ mb: 2 }}>
                             {(index === 0 ||
-                                new Date(message.createdAt).toDateString() !==
+                                timeStamp.toDateString() !==
                                 new Date(messages[index - 1]?.createdAt).toDateString()) && (
                                     <Typography
                                         variant="caption"
@@ -75,7 +81,7 @@ const ConversationPage = () => {
                                             color: "grey.600"
                                         }}
                                     >
-                                        {new Date(message.createdAt).toLocaleDateString()}
+                                        {!isToday ? timeStamp.toLocaleDateString() : "Idag"}
                                     </Typography>
                                 )}
 
@@ -160,9 +166,10 @@ const ConversationPage = () => {
                                         justifySelf: isUser ? "end" : "start",
                                     }}
                                 >
-                                    {new Date(message.createdAt).toLocaleTimeString([], {
+                                    {new Date(message.createdAt).toLocaleTimeString('sv-SE', {
                                         hour: "2-digit",
                                         minute: "2-digit",
+                                        hour12: false,
                                     })}
                                 </Typography>
 
