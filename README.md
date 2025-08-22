@@ -1,9 +1,40 @@
 # Chat-app
 
+<p align="center">
+  <img src="./public/logo.png" alt="Chat-app logotyp" width="150"/>
+</p>
+
 ## Beskrivning
-Detta är en chattapplikation i React med autentisering, meddelandehantering och användarprofiler. Projektet använder ett externt API ([Chatify API](https://chatify-api.up.railway.app/api-docs/)) för backend-funktionalitet.
+Detta är en chattapplikation med autentisering, meddelandehantering och användarprofiler. Projektet använder ett externt API ([Chatify API](https://chatify-api.up.railway.app/api-docs/)) för backend-funktionalitet.
 
 Projektet är en inlämningsuppgift i kursen *Avancerad webbutveckling med JavaScript*.
+
+## Screenshots och demos
+
+### Login and register
+<a href="./screenshots/register-and-login-demo.gif">
+  <img src="./screenshots/register-and-login-demo.gif" alt="Login-and-register-demo" width="300"/>
+</a>
+
+### Chat
+<a href="./screenshots/conversations-page.png">
+  <img src="./screenshots/conversations-page.png" alt="Chatsida" width="300"/>
+</a>
+
+<a href="./screenshots/invites-page.png">
+  <img src="./screenshots/invites-page.png" alt="Sida med medeleandeförfrågningar" width="300"/>
+</a>
+
+<a href="./screenshots/conversation-demo.gif">
+  <img src="./screenshots/conversation-demo.gif" alt="Demo konversation" width="300"/>
+</a>
+
+### Profil
+<a href="./screenshots/update-user-info-demo.gif">
+  <img src="./screenshots/update-user-info-demo.gif" alt="Profilsida" width="300"/>
+</a>
+
+##
 
 ## Funktioner
 
