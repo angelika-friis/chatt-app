@@ -12,26 +12,34 @@ Projektet är en inlämningsuppgift i kursen *Avancerad webbutveckling med JavaS
 ## Screenshots och demos
 
 ### Login and register
+<a href="./screenshots/login.png">
+  <img src="./screenshots/login.png" alt="Login" width="150"/>
+</a>
+
+<a href="./screenshots/register.png">
+  <img src="./screenshots/register.png" alt="Register" width="150"/>
+</a>
+
 <a href="./screenshots/register-and-login-demo.gif">
-  <img src="./screenshots/register-and-login-demo.gif" alt="Login-and-register-demo" width="300"/>
+  <img src="./screenshots/register-and-login-demo.gif" alt="Login-and-register-demo" width="150"/>
 </a>
 
 ### Chat
 <a href="./screenshots/conversations-page.png">
-  <img src="./screenshots/conversations-page.png" alt="Chatsida" width="300"/>
+  <img src="./screenshots/conversations-page.png" alt="Chatsida" width="150"/>
 </a>
 
 <a href="./screenshots/invites-page.png">
-  <img src="./screenshots/invites-page.png" alt="Sida med medeleandeförfrågningar" width="300"/>
+  <img src="./screenshots/invites-page.png" alt="Sida med medeleandeförfrågningar" width="150"/>
 </a>
 
 <a href="./screenshots/conversation-demo.gif">
-  <img src="./screenshots/conversation-demo.gif" alt="Demo konversation" width="300"/>
+  <img src="./screenshots/conversation-demo.gif" alt="Demo konversation" width="150"/>
 </a>
 
 ### Profil
 <a href="./screenshots/update-user-info-demo.gif">
-  <img src="./screenshots/update-user-info-demo.gif" alt="Profilsida" width="300"/>
+  <img src="./screenshots/update-user-info-demo.gif" alt="Profilsida" width="150"/>
 </a>
 
 ##
